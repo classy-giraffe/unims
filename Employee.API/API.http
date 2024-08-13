@@ -1,0 +1,42 @@
+@API_HostAddress = http://localhost:5258
+@Version = v1
+@EmployeeAPI = {{API_HostAddress}}/api/{{Version}}/Employee
+@DepartmentAPI = {{API_HostAddress}}/api/{{Version}}/Department
+@JobTitleAPI = {{API_HostAddress}}/api/{{Version}}/JobTitle
+
+### 
+# @name CreateDepartment
+POST {{DepartmentAPI}}
+Content-Type: application/json
+
+{
+    "Name": "IT",
+    "Description": "Information Technology"
+}
+
+###
+# @name GetDepartments
+GET {{DepartmentAPI}}
+Content-Type: application/json
+
+###
+# @name GetDepartmentById
+GET {{DepartmentAPI}}/1
+Content-Type: application/json
+
+
+###
+# @name UpdateDepartment
+PUT {{DepartmentAPI}}
+Content-Type: application/json
+
+{
+    "Id": 1,
+    "Name": "HR",
+    "Description": "Human Resource"
+}
+
+###
+# @name DeleteDepartment
+DELETE {{DepartmentAPI}}/1
+Content-Type: application/json
