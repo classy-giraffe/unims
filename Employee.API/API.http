@@ -10,8 +10,8 @@ POST {{DepartmentAPI}}
 Content-Type: application/json
 
 {
-    "Name": "IT",
-    "Description": "Information Technology"
+  "Name": "IT",
+  "Description": "Information Technology"
 }
 
 ###
@@ -31,9 +31,9 @@ PUT {{DepartmentAPI}}
 Content-Type: application/json
 
 {
-    "Id": 1,
-    "Name": "HR",
-    "Description": "Human Resource"
+  "Id": 1,
+  "Name": "HR",
+  "Description": "Human Resource"
 }
 
 ###

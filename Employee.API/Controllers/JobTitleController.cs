@@ -9,7 +9,8 @@ namespace Employee.API.Controllers;
 public class JobTitleController(IBusiness business, ILogger<JobTitleController> logger) : ControllerBase
 {
     [HttpPost(Name = "CreateJobTitle")]
-    public async Task<IActionResult> CreateJobTitle(CreateJobTitleDto createJobTitleDto, CancellationToken cancellationToken)
+    public async Task<IActionResult> CreateJobTitle(CreateJobTitleDto createJobTitleDto,
+        CancellationToken cancellationToken)
     {
         await business.CreateJobTitle(createJobTitleDto, cancellationToken);
         return Ok();
@@ -30,7 +31,8 @@ public class JobTitleController(IBusiness business, ILogger<JobTitleController> 
     }
 
     [HttpPut(Name = "UpdateJobTitle")]
-    public async Task<IActionResult> UpdateJobTitle(UpdateJobTitleDto updateJobTitleDto, CancellationToken cancellationToken)
+    public async Task<IActionResult> UpdateJobTitle(UpdateJobTitleDto updateJobTitleDto,
+        CancellationToken cancellationToken)
     {
         await business.UpdateJobTitle(updateJobTitleDto, cancellationToken);
         return Ok();

@@ -1,6 +1,4 @@
-﻿using Employee.Repository.Models;
-
-namespace Employee.Shared;
+﻿namespace Employee.Shared;
 
 public class CreateEmployeeDto
 {

@@ -58,7 +58,7 @@ public class EmployeeController(IBusiness business, ILogger<EmployeeController> 
         var employees = await business.GetEmployeesByJobTitle(jobTitleId, cancellationToken);
         return Ok(employees);
     }
-    
+
     [HttpGet("HireDate/{hireDate:datetime}", Name = "GetEmployeesByHireDate")]
     public async Task<IActionResult> GetEmployeesByHireDate(DateTime hireDate, CancellationToken cancellationToken)
     {

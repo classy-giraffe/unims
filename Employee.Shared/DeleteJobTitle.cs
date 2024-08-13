@@ -1,6 +1,6 @@
 ﻿namespace Employee.Shared;
 
-public class DeleteJobTitleId
+public class DeleteJobTitle
 {
     public int JobTitleId { get; set; }
 }
