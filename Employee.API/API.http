@@ -1,8 +1,10 @@
-@API_HostAddress = http://localhost:5258
+@API_HostAddress = http://employee-ms
+@API_Port = 8080
 @Version = v1
-@EmployeeAPI = {{API_HostAddress}}/api/{{Version}}/Employee
-@DepartmentAPI = {{API_HostAddress}}/api/{{Version}}/Department
-@JobTitleAPI = {{API_HostAddress}}/api/{{Version}}/JobTitle
+@EmployeeAPI = {{API_HostAddress}}:{{API_Port}}/api/{{Version}}/Employee
+@DepartmentAPI = {{API_HostAddress}}:{{API_Port}}/api/{{Version}}/Department
+@JobTitleAPI = {{API_HostAddress}}:{{API_Port}}/api/{{Version}}/JobTitle
+
 
 ### 
 # @name CreateDepartment
@@ -40,3 +42,61 @@ Content-Type: application/json
 # @name DeleteDepartment
 DELETE {{DepartmentAPI}}/1
 Content-Type: application/json
+
+###
+# @name CreateJobTitle
+POST {{JobTitleAPI}}
+Content-Type: application/json
+
+{
+  "Name": "Software Engineer",
+  "Description": "Software Engineer"
+}
+
+###
+# @name GetJobTitles
+GET {{JobTitleAPI}}
+Content-Type: application/json
+
+###
+# @name GetJobTitleById
+GET {{JobTitleAPI}}/1
+Content-Type: application/json
+
+###
+# @name UpdateJobTitle
+PUT {{JobTitleAPI}}
+Content-Type: application/json
+
+{
+  "Id": 1,
+  "Name": "Senior Software Engineer",
+  "Description": "Senior Software Engineer"
+}
+
+###
+# @name DeleteJobTitle
+DELETE {{JobTitleAPI}}/1
+Content-Type: application/json
+
+###
+# @name CreateEmployee
+POST {{EmployeeAPI}}
+Content-Type: application/json
+
+{
+  "name": "John",
+  "surname": "Doe",
+  "email": "test@email.com",
+  "birthDate": "1985-08-14T08:03:08.782Z",
+  "jobTitle": {
+    "name": "Software Engineer",
+    "description": "Software Engineer"
+  },
+  "department": {
+    "name": "IT",
+    "description": "Information Technology"
+  },
+  "hireDate": "2024-08-14T08:03:08.782Z"
+}
+

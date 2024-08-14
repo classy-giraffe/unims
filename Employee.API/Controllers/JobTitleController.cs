@@ -39,9 +39,10 @@ public class JobTitleController(IBusiness business, ILogger<JobTitleController> 
     }
 
     [HttpDelete("{jobTitleId:int}", Name = "DeleteJobTitle")]
+    [ProducesResponseType(404)]
     public async Task<IActionResult> DeleteJobTitle(int jobTitleId, CancellationToken cancellationToken)
     {
-        await business.DeleteJobTitle(jobTitleId, cancellationToken);
-        return Ok();
+        var isDeleted = await business.DeleteJobTitle(jobTitleId, cancellationToken);
+        return isDeleted ? Ok() : NotFound();
     }
 }

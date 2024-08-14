@@ -28,15 +28,12 @@ public class Repository(EmployeeDbContext dbContext) : IRepository
         return await dbContext.Employees.ToListAsync(cancellationToken);
     }
 
-    public async Task DeleteEmployee(int employeeId, CancellationToken cancellationToken = default)
+    public async Task<bool> DeleteEmployee(int employeeId, CancellationToken cancellationToken = default) 
     {
-        var employee = await dbContext.Employees
-            .Where(e => e.EmployeeId == employeeId)
-            .FirstOrDefaultAsync(cancellationToken);
-
-        if (employee is null) return;
-
+        var employee = await GetEmployeeById(employeeId, cancellationToken);
+        if (employee is null) return false;
         dbContext.Employees.Remove(employee);
+        return true;
     }
 
     public async Task<IEnumerable<Models.Employee>> GetEmployeesByDepartment(int departmentId,
@@ -80,15 +77,12 @@ public class Repository(EmployeeDbContext dbContext) : IRepository
         return await dbContext.Departments.ToListAsync(cancellationToken);
     }
 
-    public async Task DeleteDepartment(int departmentId, CancellationToken cancellationToken = default)
+    public async Task<bool> DeleteDepartment(int departmentId, CancellationToken cancellationToken = default)
     {
-        var department = await dbContext.Departments
-            .Where(d => d.DepartmentId == departmentId)
-            .FirstOrDefaultAsync(cancellationToken);
-
-        if (department is null) return;
-
+        var department = await GetDepartmentById(departmentId, cancellationToken);
+        if (department is null) return false;
         dbContext.Departments.Remove(department);
+        return true;
     }
 
     public async Task CreateJobTitle(JobTitle jobTitle, CancellationToken cancellationToken = default)
@@ -108,14 +102,11 @@ public class Repository(EmployeeDbContext dbContext) : IRepository
         return await dbContext.JobTitles.ToListAsync(cancellationToken);
     }
 
-    public async Task DeleteJobTitle(int jobTitleId, CancellationToken cancellationToken = default)
+    public async Task<bool> DeleteJobTitle(int jobTitleId, CancellationToken cancellationToken = default)
     {
-        var jobTitle = await dbContext.JobTitles
-            .Where(jt => jt.JobTitleId == jobTitleId)
-            .FirstOrDefaultAsync(cancellationToken);
-
-        if (jobTitle is null) return;
-
+        var jobTitle = await GetJobTitleById(jobTitleId, cancellationToken);
+        if (jobTitle is null) return false;
         dbContext.JobTitles.Remove(jobTitle);
+        return true;
     }
 }

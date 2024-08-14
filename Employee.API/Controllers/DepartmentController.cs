@@ -1,4 +1,6 @@
-﻿using Employee.Business.Abstraction;
+﻿using System.ComponentModel;
+using System.Diagnostics;
+using Employee.Business.Abstraction;
 using Employee.Shared;
 using Microsoft.AspNetCore.Mvc;
 
@@ -39,9 +41,10 @@ public class DepartmentController(IBusiness business, ILogger<DepartmentControll
     }
 
     [HttpDelete("{departmentId:int}", Name = "DeleteDepartment")]
+    [ProducesResponseType(404)]
     public async Task<IActionResult> DeleteDepartment(int departmentId, CancellationToken cancellationToken)
     {
-        await business.DeleteDepartment(departmentId, cancellationToken);
-        return Ok();
+        var isDeleted = await business.DeleteDepartment(departmentId, cancellationToken);
+        return isDeleted ? Ok() : NotFound();
     }
 }

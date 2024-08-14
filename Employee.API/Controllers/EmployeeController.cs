@@ -39,10 +39,11 @@ public class EmployeeController(IBusiness business, ILogger<EmployeeController> 
     }
 
     [HttpDelete("{employeeId:int}", Name = "DeleteEmployee")]
+    [ProducesResponseType(404)]
     public async Task<IActionResult> DeleteEmployee(int employeeId, CancellationToken cancellationToken)
     {
-        await business.DeleteEmployee(employeeId, cancellationToken);
-        return Ok();
+        var isDeleted = await business.DeleteEmployee(employeeId, cancellationToken);
+        return isDeleted ? Ok() : NotFound();
     }
 
     [HttpGet("Department/{departmentId:int}", Name = "GetEmployeesByDepartment")]

@@ -8,7 +8,7 @@ public interface IBusiness
     public Task<ReadEmployeeDto?> GetEmployeeById(int employeeId, CancellationToken cancellationToken);
     public Task<IEnumerable<ReadEmployeeDto>> GetEmployees(CancellationToken cancellationToken);
     public Task UpdateEmployee(UpdateEmployeeDto updateEmployeeDto, CancellationToken cancellationToken);
-    public Task DeleteEmployee(int employeeId, CancellationToken cancellationToken);
+    public Task<bool> DeleteEmployee(int employeeId, CancellationToken cancellationToken);
 
     public Task<IEnumerable<ReadEmployeeDto>> GetEmployeesByDepartment(int departmentId,
         CancellationToken cancellationToken);
@@ -23,11 +23,11 @@ public interface IBusiness
     public Task<ReadDepartmentDto?> GetDepartmentById(int departmentId, CancellationToken cancellationToken);
     public Task<IEnumerable<ReadDepartmentDto>> GetDepartments(CancellationToken cancellationToken);
     public Task UpdateDepartment(UpdateDepartmentDto updateDepartmentDto, CancellationToken cancellationToken);
-    public Task DeleteDepartment(int departmentId, CancellationToken cancellationToken);
+    public Task<bool> DeleteDepartment(int departmentId, CancellationToken cancellationToken);
 
     public Task CreateJobTitle(CreateJobTitleDto createJobTitleDto, CancellationToken cancellationToken);
     public Task<ReadJobTitleDto?> GetJobTitleById(int jobTitleId, CancellationToken cancellationToken);
     public Task<IEnumerable<ReadJobTitleDto>> GetJobTitles(CancellationToken cancellationToken);
     public Task UpdateJobTitle(UpdateJobTitleDto updateJobTitleDto, CancellationToken cancellationToken);
-    public Task DeleteJobTitle(int jobTitleId, CancellationToken cancellationToken);
+    public Task<bool> DeleteJobTitle(int jobTitleId, CancellationToken cancellationToken);
 }

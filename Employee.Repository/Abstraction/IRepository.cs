@@ -15,7 +15,7 @@ public interface IRepository
 
     public Task<IEnumerable<Models.Employee>> GetEmployees(CancellationToken cancellationToken = default);
 
-    public Task DeleteEmployee(int employeeId, CancellationToken cancellationToken = default);
+    public Task<bool> DeleteEmployee(int employeeId, CancellationToken cancellationToken = default);
 
     public Task<IEnumerable<Models.Employee>> GetEmployeesByDepartment(int departmentId,
         CancellationToken cancellationToken = default);
@@ -33,7 +33,7 @@ public interface IRepository
     public Task<IEnumerable<Department>> GetDepartments(CancellationToken cancellationToken = default);
 
 
-    public Task DeleteDepartment(int departmentId, CancellationToken cancellationToken = default);
+    public Task<bool> DeleteDepartment(int departmentId, CancellationToken cancellationToken = default);
 
     public Task CreateJobTitle(JobTitle jobTitle, CancellationToken cancellationToken = default);
 
@@ -41,5 +41,5 @@ public interface IRepository
 
     public Task<IEnumerable<JobTitle>> GetJobTitles(CancellationToken cancellationToken = default);
 
-    public Task DeleteJobTitle(int jobTitleId, CancellationToken cancellationToken = default);
+    public Task<bool> DeleteJobTitle(int jobTitleId, CancellationToken cancellationToken = default);
 }

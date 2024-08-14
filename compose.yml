@@ -1,4 +1,14 @@
 services:
+  employee-ms:
+    build:
+      context: .
+      dockerfile: Employee.API/Dockerfile
+    container_name: employee-ms
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+  
   postgres:
     image: postgres
     container_name: postgres_db
@@ -6,12 +16,12 @@ services:
     environment:
       POSTGRES_USER: myuser
       POSTGRES_PASSWORD: mypassword
-      POSTGRES_DB: mydatabase
+      POSTGRES_DB: MSProd
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-
+  
   adminer:
     image: adminer
     container_name: adminer

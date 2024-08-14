@@ -16,29 +16,28 @@ public class Business(IRepository repository, ILogger<Business> logger, IMapper 
         await repository.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task DeleteJobTitle(int jobTitleId, CancellationToken cancellationToken)
+    public async Task<bool> DeleteJobTitle(int jobTitleId, CancellationToken cancellationToken)
     {
-        var jobTitle = await repository.GetJobTitleById(jobTitleId, cancellationToken);
-        if (jobTitle is null)
+        var isDeleted = await repository.DeleteJobTitle(jobTitleId, cancellationToken);
+        if (!isDeleted)
         {
             logger.LogError("Job title with id {jobTitleId} not found", jobTitleId);
-            return;
+            return false;
         }
-
-        await repository.DeleteJobTitle(jobTitleId, cancellationToken);
         await repository.SaveChangesAsync(cancellationToken);
+        return true;
     }
 
-    public async Task DeleteDepartment(int departmentId, CancellationToken cancellationToken)
+    public async Task<bool> DeleteDepartment(int departmentId, CancellationToken cancellationToken)
     {
-        var department = await repository.GetDepartmentById(departmentId, cancellationToken);
-        if (department is null)
+        var isDeleted = await repository.DeleteDepartment(departmentId, cancellationToken);
+        if (!isDeleted)
         {
             logger.LogError("Department with id {departmentId} not found", departmentId);
-            return;
+            return false;
         }
-        await repository.DeleteDepartment(departmentId, cancellationToken);
         await repository.SaveChangesAsync(cancellationToken);
+        return true;
     }
 
     public async Task UpdateJobTitle(UpdateJobTitleDto updateJobTitleDto, CancellationToken cancellationToken)
@@ -98,18 +97,19 @@ public class Business(IRepository repository, ILogger<Business> logger, IMapper 
         }
         mapper.Map(updateEmployeeDto, employee);
         await repository.SaveChangesAsync(cancellationToken);
+        
     }
 
-    public async Task DeleteEmployee(int employeeId, CancellationToken cancellationToken)
+    public async Task<bool> DeleteEmployee(int employeeId, CancellationToken cancellationToken)
     {
-        var employee = await repository.GetEmployeeById(employeeId, cancellationToken);
-        if (employee is null)
+        var isDeleted = await repository.DeleteEmployee(employeeId, cancellationToken);
+        if (!isDeleted)
         {
             logger.LogError("Employee with id {employeeId} not found", employeeId);
-            return;
+            return false;
         }
-        await repository.DeleteEmployee(employeeId, cancellationToken);
         await repository.SaveChangesAsync(cancellationToken);
+        return true;
     }
 
     public async Task<IEnumerable<ReadEmployeeDto>> GetEmployeesByDepartment(int departmentId,
