@@ -17,6 +17,7 @@ public class EmployeeController(IBusiness business, ILogger<EmployeeController> 
     }
 
     [HttpGet("{employeeId:int}", Name = "GetEmployeeById")]
+    [ProducesResponseType(404)]
     public async Task<IActionResult> GetEmployeeById(int employeeId, CancellationToken cancellationToken)
     {
         var employee = await business.GetEmployeeById(employeeId, cancellationToken);
@@ -31,11 +32,12 @@ public class EmployeeController(IBusiness business, ILogger<EmployeeController> 
     }
 
     [HttpPut(Name = "UpdateEmployee")]
+    [ProducesResponseType(404)]
     public async Task<IActionResult> UpdateEmployee(UpdateEmployeeDto updateEmployeeDto,
         CancellationToken cancellationToken)
     {
-        await business.UpdateEmployee(updateEmployeeDto, cancellationToken);
-        return Ok();
+        var isUpdated = await business.UpdateEmployee(updateEmployeeDto, cancellationToken);
+        return isUpdated ? Ok() : NotFound();
     }
 
     [HttpDelete("{employeeId:int}", Name = "DeleteEmployee")]

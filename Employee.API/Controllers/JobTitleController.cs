@@ -17,6 +17,7 @@ public class JobTitleController(IBusiness business, ILogger<JobTitleController> 
     }
 
     [HttpGet("{jobTitleId:int}", Name = "GetJobTitleById")]
+    [ProducesResponseType(404)]
     public async Task<IActionResult> GetJobTitleById(int jobTitleId, CancellationToken cancellationToken)
     {
         var jobTitle = await business.GetJobTitleById(jobTitleId, cancellationToken);
@@ -31,11 +32,12 @@ public class JobTitleController(IBusiness business, ILogger<JobTitleController> 
     }
 
     [HttpPut(Name = "UpdateJobTitle")]
+    [ProducesResponseType(404)]
     public async Task<IActionResult> UpdateJobTitle(UpdateJobTitleDto updateJobTitleDto,
         CancellationToken cancellationToken)
     {
-        await business.UpdateJobTitle(updateJobTitleDto, cancellationToken);
-        return Ok();
+        var isUpdated = await business.UpdateJobTitle(updateJobTitleDto, cancellationToken);
+        return isUpdated ? Ok() : NotFound();
     }
 
     [HttpDelete("{jobTitleId:int}", Name = "DeleteJobTitle")]

@@ -40,16 +40,17 @@ public class Business(IRepository repository, ILogger<Business> logger, IMapper 
         return true;
     }
 
-    public async Task UpdateJobTitle(UpdateJobTitleDto updateJobTitleDto, CancellationToken cancellationToken)
+    public async Task<bool> UpdateJobTitle(UpdateJobTitleDto updateJobTitleDto, CancellationToken cancellationToken)
     {
         var jobTitle = await repository.GetJobTitleById(updateJobTitleDto.JobTitleId, cancellationToken);
         if (jobTitle is null)
         {
             logger.LogError("Job title with id {jobTitleId} not found", updateJobTitleDto.JobTitleId);
-            return;
+            return false;
         }
         mapper.Map(updateJobTitleDto, jobTitle);
         await repository.SaveChangesAsync(cancellationToken);
+        return true;
     }
 
     public async Task<IEnumerable<ReadJobTitleDto>> GetJobTitles(CancellationToken cancellationToken)
@@ -87,17 +88,17 @@ public class Business(IRepository repository, ILogger<Business> logger, IMapper 
         return employees.Select(mapper.Map<ReadEmployeeDto>);
     }
 
-    public async Task UpdateEmployee(UpdateEmployeeDto updateEmployeeDto, CancellationToken cancellationToken)
+    public async Task<bool> UpdateEmployee(UpdateEmployeeDto updateEmployeeDto, CancellationToken cancellationToken)
     {
         var employee = await repository.GetEmployeeById(updateEmployeeDto.EmployeeId, cancellationToken);
         if (employee is null)
         {
             logger.LogError("Employee with id {employeeId} not found", updateEmployeeDto.EmployeeId);
-            return;
+            return false;
         }
         mapper.Map(updateEmployeeDto, employee);
         await repository.SaveChangesAsync(cancellationToken);
-        
+        return true;
     }
 
     public async Task<bool> DeleteEmployee(int employeeId, CancellationToken cancellationToken)
@@ -154,16 +155,16 @@ public class Business(IRepository repository, ILogger<Business> logger, IMapper 
         return departments.Select(mapper.Map<ReadDepartmentDto>);
     }
 
-    public async Task UpdateDepartment(UpdateDepartmentDto updateDepartmentDto, CancellationToken cancellationToken)
+    public async Task<bool> UpdateDepartment(UpdateDepartmentDto updateDepartmentDto, CancellationToken cancellationToken)
     {
         var department = await repository.GetDepartmentById(updateDepartmentDto.DepartmentId, cancellationToken);
         if (department is null)
         {
             logger.LogError("Department with id {departmentId} not found", updateDepartmentDto.DepartmentId);
-            return;
+            return false;
         }
-
         mapper.Map(updateDepartmentDto, department);
         await repository.SaveChangesAsync(cancellationToken);
+        return true;
     }
 }

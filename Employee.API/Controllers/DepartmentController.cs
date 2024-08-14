@@ -19,6 +19,7 @@ public class DepartmentController(IBusiness business, ILogger<DepartmentControll
     }
 
     [HttpGet("{departmentId:int}", Name = "GetDepartmentById")]
+    [ProducesResponseType(404)]
     public async Task<IActionResult> GetDepartmentById(int departmentId, CancellationToken cancellationToken)
     {
         var department = await business.GetDepartmentById(departmentId, cancellationToken);
@@ -33,11 +34,12 @@ public class DepartmentController(IBusiness business, ILogger<DepartmentControll
     }
 
     [HttpPut(Name = "UpdateDepartment")]
+    [ProducesResponseType(404)]
     public async Task<IActionResult> UpdateDepartment(UpdateDepartmentDto updateDepartmentDto,
         CancellationToken cancellationToken)
     {
-        await business.UpdateDepartment(updateDepartmentDto, cancellationToken);
-        return Ok();
+        var isUpdated = await business.UpdateDepartment(updateDepartmentDto, cancellationToken);
+        return isUpdated ? Ok() : NotFound();
     }
 
     [HttpDelete("{departmentId:int}", Name = "DeleteDepartment")]
