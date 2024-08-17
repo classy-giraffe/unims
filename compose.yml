@@ -9,6 +9,16 @@ services:
     depends_on:
       - postgres
   
+  attendance-ms:
+    build:
+      context: .
+      dockerfile: Attendance.API/Dockerfile
+    container_name: attendance-ms
+    ports:
+      - "8081:8080"
+    depends_on:
+      - postgres
+  
   postgres:
     image: postgres
     container_name: postgres_db

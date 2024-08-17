@@ -28,7 +28,7 @@ public class Repository(EmployeeDbContext dbContext) : IRepository
         return await dbContext.Employees.ToListAsync(cancellationToken);
     }
 
-    public async Task<bool> DeleteEmployee(int employeeId, CancellationToken cancellationToken = default) 
+    public async Task<bool> DeleteEmployee(int employeeId, CancellationToken cancellationToken = default)
     {
         var employee = await GetEmployeeById(employeeId, cancellationToken);
         if (employee is null) return false;

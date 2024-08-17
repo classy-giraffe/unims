@@ -24,6 +24,7 @@ public class Business(IRepository repository, ILogger<Business> logger, IMapper 
             logger.LogError("Job title with id {jobTitleId} not found", jobTitleId);
             return false;
         }
+
         await repository.SaveChangesAsync(cancellationToken);
         return true;
     }
@@ -36,6 +37,7 @@ public class Business(IRepository repository, ILogger<Business> logger, IMapper 
             logger.LogError("Department with id {departmentId} not found", departmentId);
             return false;
         }
+
         await repository.SaveChangesAsync(cancellationToken);
         return true;
     }
@@ -48,6 +50,7 @@ public class Business(IRepository repository, ILogger<Business> logger, IMapper 
             logger.LogError("Job title with id {jobTitleId} not found", updateJobTitleDto.JobTitleId);
             return false;
         }
+
         mapper.Map(updateJobTitleDto, jobTitle);
         await repository.SaveChangesAsync(cancellationToken);
         return true;
@@ -96,6 +99,7 @@ public class Business(IRepository repository, ILogger<Business> logger, IMapper 
             logger.LogError("Employee with id {employeeId} not found", updateEmployeeDto.EmployeeId);
             return false;
         }
+
         mapper.Map(updateEmployeeDto, employee);
         await repository.SaveChangesAsync(cancellationToken);
         return true;
@@ -109,6 +113,7 @@ public class Business(IRepository repository, ILogger<Business> logger, IMapper 
             logger.LogError("Employee with id {employeeId} not found", employeeId);
             return false;
         }
+
         await repository.SaveChangesAsync(cancellationToken);
         return true;
     }
@@ -155,7 +160,8 @@ public class Business(IRepository repository, ILogger<Business> logger, IMapper 
         return departments.Select(mapper.Map<ReadDepartmentDto>);
     }
 
-    public async Task<bool> UpdateDepartment(UpdateDepartmentDto updateDepartmentDto, CancellationToken cancellationToken)
+    public async Task<bool> UpdateDepartment(UpdateDepartmentDto updateDepartmentDto,
+        CancellationToken cancellationToken)
     {
         var department = await repository.GetDepartmentById(updateDepartmentDto.DepartmentId, cancellationToken);
         if (department is null)
@@ -163,6 +169,7 @@ public class Business(IRepository repository, ILogger<Business> logger, IMapper 
             logger.LogError("Department with id {departmentId} not found", updateDepartmentDto.DepartmentId);
             return false;
         }
+
         mapper.Map(updateDepartmentDto, department);
         await repository.SaveChangesAsync(cancellationToken);
         return true;

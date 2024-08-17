@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-using System.Diagnostics;
-using Employee.Business.Abstraction;
+﻿using Employee.Business.Abstraction;
 using Employee.Shared;
 using Microsoft.AspNetCore.Mvc;
 
