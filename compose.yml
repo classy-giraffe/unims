@@ -7,7 +7,9 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - postgres
+      - employee-db
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=employee-db;Port=5432;Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD};Database=EmployeeDB;
   
   attendance-ms:
     build:
@@ -17,27 +19,42 @@ services:
     ports:
       - "8081:8080"
     depends_on:
-      - postgres
+      - attendance-db
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=attendance-db;Port=5432;Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD};Database=AttendanceDB;
   
-  postgres:
+  employee-db:
     image: postgres
-    container_name: postgres_db
+    container_name: employee-db
     restart: always
     environment:
-      POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: mypassword
-      POSTGRES_DB: MSProd
-    ports:
-      - "5432:5432"
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: EmployeeDB
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - employee-db-data:/var/lib/postgresql/data
+  
+  attendance-db:
+    image: postgres
+    container_name: attendance-db
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: AttendanceDB
+    volumes:
+      - attendance-db-data:/var/lib/postgresql/data
   
   adminer:
     image: adminer
     container_name: adminer
     restart: always
+    depends_on:
+      - employee-db
+      - attendance-db
     ports:
       - "8000:8080"
 
 volumes:
-  postgres_data:
+  employee-db-data:
+  attendance-db-data:
