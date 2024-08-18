@@ -6,7 +6,7 @@ namespace Employee.API.Controllers;
 
 [ApiController]
 [Route("api/v1/[controller]")]
-public class DepartmentController(IBusiness business, ILogger<DepartmentController> logger) : ControllerBase
+public class DepartmentController(IBusiness business) : ControllerBase
 {
     [HttpPost(Name = "CreateDepartment")]
     public async Task<IActionResult> CreateDepartment(CreateDepartmentDto createDepartmentDto,

@@ -10,18 +10,19 @@ namespace Attendance.Business;
 public class Business(IRepository repository, ILogger<Business> logger, IMapper mapper, IClientHttp clientHttp)
     : IBusiness
 {
-    public async Task CreateAttendance(CreateAttendanceDto createAttendanceDto,
+    public async Task<bool> CreateAttendance(CreateAttendanceDto createAttendanceDto,
         CancellationToken cancellationToken = default)
     {
         var employeeExists = await clientHttp.ValidateEmployeeAsync(createAttendanceDto.EmployeeId, cancellationToken);
         if (!employeeExists)
         {
             logger.LogError("Employee with id {employeeId} not found", createAttendanceDto.EmployeeId);
-            return;
+            return false;
         }
         var attendance = mapper.Map<Repository.Models.Attendance>(createAttendanceDto);
         await repository.CreateAttendance(attendance, cancellationToken);
         await repository.SaveChangesAsync(cancellationToken);
+        return true;
     }
 
     public async Task<bool> DeleteAttendance(int attendanceId, CancellationToken cancellationToken = default)
@@ -59,19 +60,26 @@ public class Business(IRepository repository, ILogger<Business> logger, IMapper 
         return mapper.Map<ReadAttendanceDto>(attendance);
     }
 
-    public async Task<IEnumerable<ReadAttendanceDto>> GetAttendanceByEmployeeId(int employeeId,
+    public async Task<IEnumerable<ReadAttendanceDto>> GetAttendancesByEmployeeId(int employeeId,
         CancellationToken cancellationToken = default)
     {
         var attendances = await repository.GetAttendancesByEmployeeId(employeeId, cancellationToken);
         return mapper.Map<IEnumerable<ReadAttendanceDto>>(attendances);
     }
 
-    public async Task CreateLeaveRecord(CreateLeaveRecordDto createLeaveRecordDto,
+    public async Task<bool> CreateLeaveRecord(CreateLeaveRecordDto createLeaveRecordDto,
         CancellationToken cancellationToken = default)
     {
+        var employeeExists = await clientHttp.ValidateEmployeeAsync(createLeaveRecordDto.EmployeeId, cancellationToken);
+        if (!employeeExists)
+        {
+            logger.LogError("Employee with id {employeeId} not found", createLeaveRecordDto.EmployeeId);
+            return false;
+        }
         var leaveRecord = mapper.Map<Repository.Models.LeaveRecord>(createLeaveRecordDto);
         await repository.CreateLeaveRecord(leaveRecord, cancellationToken);
         await repository.SaveChangesAsync(cancellationToken);
+        return true;
     }
 
     public async Task<bool> DeleteLeaveRecord(int leaveRecordId, CancellationToken cancellationToken = default)
@@ -119,5 +127,17 @@ public class Business(IRepository repository, ILogger<Business> logger, IMapper 
     public async Task<bool> ValidateEmployee(int employeeId, CancellationToken cancellationToken = default)
     {
         return await clientHttp.ValidateEmployeeAsync(employeeId, cancellationToken);
+    }
+    
+    public async Task<IEnumerable<ReadAttendanceDto>> GetAttendances(CancellationToken cancellationToken = default)
+    {
+        var attendances = await repository.GetAttendances(cancellationToken);
+        return mapper.Map<IEnumerable<ReadAttendanceDto>>(attendances);
+    }
+    
+    public async Task<IEnumerable<ReadLeaveRecordDto>> GetLeaveRecords(CancellationToken cancellationToken = default)
+    {
+        var leaveRecords = await repository.GetLeaveRecords(cancellationToken);
+        return mapper.Map<IEnumerable<ReadLeaveRecordDto>>(leaveRecords);
     }
 }
