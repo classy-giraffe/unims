@@ -6,4 +6,3 @@ riderModule.iml
 .env
 Attendance.API/appsettings.Development.json
 Employee.API/appsettings.Development.json
-test
