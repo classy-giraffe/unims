@@ -14,7 +14,7 @@ jobs:
     name: "unims:${{ matrix.tag }}"
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         tag:
           - Employee
