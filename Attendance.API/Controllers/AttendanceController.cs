@@ -40,14 +40,14 @@ public class AttendanceController(IBusiness business) : ControllerBase
         var isDeleted = await business.DeleteAttendance(attendanceId, cancellationToken);
         return isDeleted ? Ok() : NotFound();
     }
-    
+
     [HttpGet(Name = "GetAttendances")]
     public async Task<IActionResult> GetAttendances(CancellationToken cancellationToken)
     {
         var attendances = await business.GetAttendances(cancellationToken);
         return Ok(attendances);
     }
-    
+
     [HttpGet("employee/{employeeId:int}", Name = "GetAttendancesByEmployeeId")]
     public async Task<IActionResult> GetAttendancesByEmployeeId(int employeeId, CancellationToken cancellationToken)
     {

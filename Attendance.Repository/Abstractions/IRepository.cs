@@ -27,8 +27,10 @@ public interface IRepository
     public Task<IEnumerable<LeaveRecord>> GetLeaveRecords(CancellationToken cancellationToken = default);
 
     public Task<bool> DeleteLeaveRecord(int leaveRecordId, CancellationToken cancellationToken = default);
-    
-    public Task<IEnumerable<Models.Attendance>> GetAttendancesByEmployeeId(int employeeId, CancellationToken cancellationToken = default);
-    
-    public Task<IEnumerable<LeaveRecord>> GetLeaveRecordsByEmployeeId(int employeeId, CancellationToken cancellationToken = default);
+
+    public Task<IEnumerable<Models.Attendance>> GetAttendancesByEmployeeId(int employeeId,
+        CancellationToken cancellationToken = default);
+
+    public Task<IEnumerable<LeaveRecord>> GetLeaveRecordsByEmployeeId(int employeeId,
+        CancellationToken cancellationToken = default);
 }

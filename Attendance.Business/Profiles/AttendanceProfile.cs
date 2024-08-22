@@ -8,10 +8,10 @@ public class AttendanceProfiles : Profile
 {
     public AttendanceProfiles()
     {
-        CreateMap<CreateAttendanceDto, Attendance.Repository.Models.Attendance>().ReverseMap();
-        CreateMap<UpdateAttendanceDto, Attendance.Repository.Models.Attendance>().ReverseMap();
-        CreateMap<ReadAttendanceDto, Attendance.Repository.Models.Attendance>().ReverseMap();
-        CreateMap<DeleteAttendanceDto, Attendance.Repository.Models.Attendance>().ReverseMap();
+        CreateMap<CreateAttendanceDto, Repository.Models.Attendance>().ReverseMap();
+        CreateMap<UpdateAttendanceDto, Repository.Models.Attendance>().ReverseMap();
+        CreateMap<ReadAttendanceDto, Repository.Models.Attendance>().ReverseMap();
+        CreateMap<DeleteAttendanceDto, Repository.Models.Attendance>().ReverseMap();
 
         CreateMap<CreateLeaveRecordDto, LeaveRecord>().ReverseMap();
         CreateMap<UpdateLeaveRecordDto, LeaveRecord>().ReverseMap();

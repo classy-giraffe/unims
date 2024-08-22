@@ -1,6 +1,7 @@
 ﻿using Attendance.Business.Abstractions;
 using Attendance.Http.Abstractions;
 using Attendance.Repository.Abstractions;
+using Attendance.Repository.Models;
 using Attendance.Shared;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
@@ -19,6 +20,7 @@ public class Business(IRepository repository, ILogger<Business> logger, IMapper 
             logger.LogError("Employee with id {employeeId} not found", createAttendanceDto.EmployeeId);
             return false;
         }
+
         var attendance = mapper.Map<Repository.Models.Attendance>(createAttendanceDto);
         await repository.CreateAttendance(attendance, cancellationToken);
         await repository.SaveChangesAsync(cancellationToken);
@@ -76,7 +78,8 @@ public class Business(IRepository repository, ILogger<Business> logger, IMapper 
             logger.LogError("Employee with id {employeeId} not found", createLeaveRecordDto.EmployeeId);
             return false;
         }
-        var leaveRecord = mapper.Map<Repository.Models.LeaveRecord>(createLeaveRecordDto);
+
+        var leaveRecord = mapper.Map<LeaveRecord>(createLeaveRecordDto);
         await repository.CreateLeaveRecord(leaveRecord, cancellationToken);
         await repository.SaveChangesAsync(cancellationToken);
         return true;
@@ -128,13 +131,13 @@ public class Business(IRepository repository, ILogger<Business> logger, IMapper 
     {
         return await clientHttp.ValidateEmployeeAsync(employeeId, cancellationToken);
     }
-    
+
     public async Task<IEnumerable<ReadAttendanceDto>> GetAttendances(CancellationToken cancellationToken = default)
     {
         var attendances = await repository.GetAttendances(cancellationToken);
         return mapper.Map<IEnumerable<ReadAttendanceDto>>(attendances);
     }
-    
+
     public async Task<IEnumerable<ReadLeaveRecordDto>> GetLeaveRecords(CancellationToken cancellationToken = default)
     {
         var leaveRecords = await repository.GetLeaveRecords(cancellationToken);

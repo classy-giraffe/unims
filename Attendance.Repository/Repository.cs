@@ -57,14 +57,18 @@ public class Repository(AttendanceDbContext dbContext) : IRepository
         dbContext.LeaveRecords.Remove(leaveRecord);
         return true;
     }
-    
-    public async Task<IEnumerable<Models.Attendance>> GetAttendancesByEmployeeId(int employeeId, CancellationToken cancellationToken = default)
+
+    public async Task<IEnumerable<Models.Attendance>> GetAttendancesByEmployeeId(int employeeId,
+        CancellationToken cancellationToken = default)
     {
-        return await dbContext.Attendances.Where(attendance => attendance.EmployeeId == employeeId).ToListAsync(cancellationToken);
+        return await dbContext.Attendances.Where(attendance => attendance.EmployeeId == employeeId)
+            .ToListAsync(cancellationToken);
     }
-    
-    public async Task<IEnumerable<LeaveRecord>> GetLeaveRecordsByEmployeeId(int employeeId, CancellationToken cancellationToken = default)
+
+    public async Task<IEnumerable<LeaveRecord>> GetLeaveRecordsByEmployeeId(int employeeId,
+        CancellationToken cancellationToken = default)
     {
-        return await dbContext.LeaveRecords.Where(leaveRecord => leaveRecord.EmployeeId == employeeId).ToListAsync(cancellationToken);
+        return await dbContext.LeaveRecords.Where(leaveRecord => leaveRecord.EmployeeId == employeeId)
+            .ToListAsync(cancellationToken);
     }
 }

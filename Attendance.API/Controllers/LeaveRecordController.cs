@@ -6,7 +6,7 @@ namespace Attendance.API.Controllers;
 
 [ApiController]
 [Route("api/v1/[controller]")]
-public class LeaveRecordController(IBusiness business) : ControllerBase 
+public class LeaveRecordController(IBusiness business) : ControllerBase
 {
     [HttpPost(Name = "CreateLeaveRecord")]
     public async Task<IActionResult> CreateLeaveRecord(CreateLeaveRecordDto createLeaveRecordDto,
@@ -40,14 +40,14 @@ public class LeaveRecordController(IBusiness business) : ControllerBase
         var isDeleted = await business.DeleteLeaveRecord(leaveRecordId, cancellationToken);
         return isDeleted ? Ok() : NotFound();
     }
-    
+
     [HttpGet(Name = "GetLeaveRecords")]
     public async Task<IActionResult> GetLeaveRecords(CancellationToken cancellationToken)
     {
         var leaveRecords = await business.GetLeaveRecords(cancellationToken);
         return Ok(leaveRecords);
     }
-    
+
     [HttpGet("employee/{employeeId:int}", Name = "GetLeaveRecordsByEmployeeId")]
     public async Task<IActionResult> GetLeaveRecordsByEmployeeId(int employeeId, CancellationToken cancellationToken)
     {

@@ -15,7 +15,8 @@ builder.Services.AddDbContext<AttendanceDbContext>(options =>
 builder.Services.AddScoped<IRepository, Repository>();
 builder.Services.AddScoped<IBusiness, Business>();
 builder.Services.AddAutoMapper(typeof(AttendanceProfiles));
-builder.Services.AddHttpClient<IClientHttp, ClientHttp>(client => client.BaseAddress = new Uri("http://employee-ms:8080"));
+builder.Services.AddHttpClient<IClientHttp, ClientHttp>(client =>
+    client.BaseAddress = new Uri("http://employee-ms:8080"));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
