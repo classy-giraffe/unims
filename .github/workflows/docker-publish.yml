@@ -16,6 +16,7 @@ jobs:
         tag:
           - Employee
           - Attendance
+          - Payroll
     steps:
       - name: Checkout
         uses: actions/checkout@v4
