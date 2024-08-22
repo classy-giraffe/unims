@@ -22,6 +22,18 @@ services:
       - attendance-db
     environment:
       - ConnectionStrings__DefaultConnection=Host=attendance-db;Port=5432;Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD};Database=AttendanceDB;
+        
+  payroll-ms:
+    build:
+      context: .
+      dockerfile: Payroll.API/Dockerfile
+    container_name: payroll-ms
+    ports:
+      - "8082:8080"
+    depends_on:
+        - payroll-db
+    environment:
+        - ConnectionStrings__DefaultConnection=Host=payroll-db;Port=5432;Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD};Database=PayrollDB;
   
   employee-db:
     image: postgres
@@ -44,6 +56,15 @@ services:
       POSTGRES_DB: AttendanceDB
     volumes:
       - attendance-db-data:/var/lib/postgresql/data
+  
+  payroll-db:
+    image: postgres
+    container_name: payroll-db
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: PayrollDB
   
   adminer:
     image: adminer

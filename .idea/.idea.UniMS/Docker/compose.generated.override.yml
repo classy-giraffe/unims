@@ -38,3 +38,22 @@ services:
     - "C:\\Users\\tommy\\RiderProjects\\UniMS\\Employee.API:/app:rw"
     - "C:\\Users\\tommy\\RiderProjects\\UniMS:/src:rw"
     working_dir: "/app"
+  payroll-ms:
+    build:
+      context: "C:\\Users\\tommy\\RiderProjects\\UniMS"
+      dockerfile: "Payroll.API/Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net8.0/Payroll.API.dll"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+    image: "payroll.api:dev"
+    ports: []
+    volumes:
+    - "C:\\Users\\tommy\\.nuget\\packages:/home/app/.nuget/packages"
+    - "C:\\Users\\tommy\\RiderProjects\\UniMS\\Payroll.API:/app:rw"
+    - "C:\\Users\\tommy\\RiderProjects\\UniMS:/src:rw"
+    working_dir: "/app"
