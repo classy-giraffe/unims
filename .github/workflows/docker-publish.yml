@@ -5,9 +5,6 @@ on:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
-env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   build:
@@ -22,9 +19,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-       
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
       
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -41,8 +35,10 @@ jobs:
         id: meta_unims
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/classy-giraffe/unims
-          tags: ${{ matrix.tag }}
+          images: |
+            ghcr.io/classy-giraffe/unims
+          tags: |
+            type=raw,${{ matrix.tag }}
 
       - name: Build and push
         uses: docker/build-push-action@v6
