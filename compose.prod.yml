@@ -1,8 +1,6 @@
 services:
   employee-ms:
-    build:
-      context: .
-      dockerfile: Employee.API/Dockerfile
+    image: "ghcr.io/classy-giraffe/unims:employee"
     container_name: employee-ms
     ports:
       - "8080:8080"
@@ -12,9 +10,7 @@ services:
       - ConnectionStrings__DefaultConnection=Host=employee-db;Port=5432;Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD};Database=EmployeeDB;
   
   attendance-ms:
-    build:
-      context: .
-      dockerfile: Attendance.API/Dockerfile
+    image: "ghcr.io/classy-giraffe/unims:attendance"
     container_name: attendance-ms
     ports:
       - "8081:8080"
@@ -24,9 +20,7 @@ services:
       - ConnectionStrings__DefaultConnection=Host=attendance-db;Port=5432;Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD};Database=AttendanceDB;
         
   payroll-ms:
-    build:
-      context: .
-      dockerfile: Payroll.API/Dockerfile
+    image: "ghcr.io/classy-giraffe/unims:payroll"
     container_name: payroll-ms
     ports:
       - "8082:8080"
@@ -65,17 +59,10 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: PayrollDB
-  
-  adminer:
-    image: adminer
-    container_name: adminer
-    restart: always
-    depends_on:
-      - employee-db
-      - attendance-db
-    ports:
-      - "8000:8080"
+    volumes:
+      - payroll-db-data:/var/lib/postgresql/data
 
 volumes:
   employee-db-data:
   attendance-db-data:
+  payroll-db-data:

@@ -1,0 +1,84 @@
+﻿services:
+  employee-ms:
+    build:
+      context: .
+      dockerfile: Employee.API/Dockerfile
+    container_name: employee-ms
+    ports:
+      - "8080:8080"
+    depends_on:
+      - employee-db
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=employee-db;Port=5432;Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD};Database=EmployeeDB;
+  
+  attendance-ms:
+    build:
+      context: .
+      dockerfile: Attendance.API/Dockerfile
+    container_name: attendance-ms
+    ports:
+      - "8081:8080"
+    depends_on:
+      - attendance-db
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=attendance-db;Port=5432;Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD};Database=AttendanceDB;
+  
+  payroll-ms:
+    build:
+      context: .
+      dockerfile: Payroll.API/Dockerfile
+    container_name: payroll-ms
+    ports:
+      - "8082:8080"
+    depends_on:
+      - payroll-db
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=payroll-db;Port=5432;Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD};Database=PayrollDB;
+  
+  employee-db:
+    image: postgres
+    container_name: employee-db
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: EmployeeDB
+    volumes:
+      - employee-db-data:/var/lib/postgresql/data
+  
+  attendance-db:
+    image: postgres
+    container_name: attendance-db
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: AttendanceDB
+    volumes:
+      - attendance-db-data:/var/lib/postgresql/data
+  
+  payroll-db:
+    image: postgres
+    container_name: payroll-db
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: PayrollDB
+  
+  adminer:
+    image: adminer
+    container_name: adminer
+    restart: always
+    depends_on:
+      - employee-db
+      - attendance-db
+    ports:
+      - "8000:8080"
+    volumes:
+      - payroll-db-data:/var/lib/postgresql/data
+
+volumes:
+  employee-db-data:
+  attendance-db-data:
+  payroll-db-data:
