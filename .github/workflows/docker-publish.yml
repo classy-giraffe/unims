@@ -37,8 +37,6 @@ jobs:
         with:
           images: |
             ghcr.io/classy-giraffe/unims
-          tags: |
-            type=raw,${{ matrix.tag }}
 
       - name: Build and push
         uses: docker/build-push-action@v6
