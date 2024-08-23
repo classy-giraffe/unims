@@ -24,7 +24,7 @@ const string producerName = "employee-producer";
 
 builder.Services.AddKafka(
     kafka => kafka
-        .UseConsoleLog()
+        .UseMicrosoftLog()
         .AddCluster(
             cluster => cluster
                 .WithBrokers(new[] { "localhost:9092" })

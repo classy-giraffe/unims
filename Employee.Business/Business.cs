@@ -78,11 +78,15 @@ public class Business(
     public async Task CreateEmployee(CreateEmployeeDto employeeDto, CancellationToken cancellationToken)
     {
         var employee = mapper.Map<Repository.Models.Employee>(employeeDto);
+
         await repository.CreateEmployee(employee, cancellationToken);
         await repository.SaveChangesAsync(cancellationToken);
+
         logger.LogInformation("Employee with id {employeeId} created on Database", employee.EmployeeId);
+
         var producer = producerAccessor.GetProducer("employee-producer");
         await producer.ProduceAsync("employee-topic", Guid.NewGuid().ToString(), employee.EmployeeId);
+
         logger.LogInformation("Employee with id {employeeId} published to Kafka", employee.EmployeeId);
     }
 

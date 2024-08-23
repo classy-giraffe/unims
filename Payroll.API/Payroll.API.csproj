@@ -11,7 +11,7 @@
         <PackageReference Include="AutoMapper" Version="13.0.1"/>
         <PackageReference Include="KafkaFlow" Version="3.0.10"/>
         <PackageReference Include="KafkaFlow.Extensions.Hosting" Version="3.0.10"/>
-        <PackageReference Include="KafkaFlow.LogHandler.Console" Version="3.0.10"/>
+        <PackageReference Include="KafkaFlow.LogHandler.Microsoft" Version="3.0.10"/>
         <PackageReference Include="KafkaFlow.Microsoft.DependencyInjection" Version="3.0.10"/>
         <PackageReference Include="KafkaFlow.Serializer" Version="2.5.1"/>
         <PackageReference Include="KafkaFlow.Serializer.JsonCore" Version="3.0.10"/>
@@ -22,6 +22,7 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.8"/>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0"/>
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4"/>
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
     </ItemGroup>

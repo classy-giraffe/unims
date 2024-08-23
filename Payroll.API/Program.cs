@@ -30,7 +30,7 @@ const string groupName = "payroll-consumer-group";
 
 builder.Services.AddKafkaFlowHostedService(
     kafka => kafka
-        .UseConsoleLog()
+        .UseMicrosoftLog()
         .AddCluster(cluster => cluster
             .WithBrokers(new[] { "localhost:9092" })
             .AddConsumer(consumer =>
@@ -51,6 +51,8 @@ builder.Services.AddKafkaFlowHostedService(
 );
 
 var app = builder.Build();
+var kafkaBus = app.Services.CreateKafkaBus();
+await kafkaBus.StartAsync();
 
 if (app.Environment.IsDevelopment())
 {
