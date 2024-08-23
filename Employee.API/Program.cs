@@ -3,6 +3,8 @@ using Employee.Business.Abstraction;
 using Employee.Business.Profiles;
 using Employee.Repository;
 using Employee.Repository.Abstraction;
+using KafkaFlow;
+using KafkaFlow.Serializer;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +17,28 @@ builder.Services.AddScoped<IBusiness, Business>();
 builder.Services.AddAutoMapper(typeof(EmployeeProfiles));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Configure KafkaFlow
+const string topicName = "employee-topic";
+const string producerName = "employee-producer";
+
+builder.Services.AddKafka(
+    kafka => kafka
+        .UseConsoleLog()
+        .AddCluster(
+            cluster => cluster
+                .WithBrokers(new[] { "localhost:9092" })
+                .CreateTopicIfNotExists(topicName, 1, 1)
+                .AddProducer(
+                    producerName,
+                    producer => producer
+                        .DefaultTopic(topicName)
+                        .AddMiddlewares(m =>
+                            m.AddSerializer<JsonCoreSerializer>()
+                        )
+                )
+        )
+);
 
 var app = builder.Build();
 

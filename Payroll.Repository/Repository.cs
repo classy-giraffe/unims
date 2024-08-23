@@ -113,4 +113,9 @@ public class Repository(PayrollDbContext dbContext) : IRepository
     {
         return await dbContext.Deductions.ToListAsync(cancellationToken);
     }
+
+    public async Task CreateEmployee(Employee employee, CancellationToken cancellationToken = default)
+    {
+        await dbContext.Employees.AddAsync(employee, cancellationToken);
+    }
 }

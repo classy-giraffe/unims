@@ -14,6 +14,8 @@ public class Business(IRepository repository, IMapper mapper, ILogger<Business> 
     public async Task<bool> CreatePayroll(CreatePayrollDto createPayrollDto,
         CancellationToken cancellationToken = default)
     {
+        // quando creo employee Kafka fa una publish dell messaggio
+        // chiamo il db locale per vedere se l'employee esiste
         var employeeExists = await clientHttp.ValidateEmployeeAsync(createPayrollDto.EmployeeId, cancellationToken);
         if (!employeeExists)
         {

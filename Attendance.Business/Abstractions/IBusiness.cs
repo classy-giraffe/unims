@@ -4,7 +4,7 @@ namespace Attendance.Business.Abstractions;
 
 public interface IBusiness
 {
-    public Task<bool> CreateAttendance(CreateAttendanceDto createAttendanceDto,
+    public Task<bool> CreateAttendance(AttendanceDto attendanceDto,
         CancellationToken cancellationToken = default);
 
     public Task<ReadAttendanceDto?> GetAttendanceById(int attendanceId, CancellationToken cancellationToken = default);
@@ -18,7 +18,7 @@ public interface IBusiness
     public Task<bool> DeleteAttendance(int attendanceId, CancellationToken cancellationToken = default);
     public Task<IEnumerable<ReadAttendanceDto>> GetAttendances(CancellationToken cancellationToken = default);
 
-    public Task<bool> CreateLeaveRecord(CreateLeaveRecordDto createLeaveRecordDto,
+    public Task<bool> CreateLeaveRecord(CreateLeaveRecordDto leaveRecordDto,
         CancellationToken cancellationToken = default);
 
     public Task<ReadLeaveRecordDto?> GetLeaveRecordById(int leaveRecordId,

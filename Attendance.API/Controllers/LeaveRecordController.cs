@@ -9,10 +9,10 @@ namespace Attendance.API.Controllers;
 public class LeaveRecordController(IBusiness business) : ControllerBase
 {
     [HttpPost(Name = "CreateLeaveRecord")]
-    public async Task<IActionResult> CreateLeaveRecord(CreateLeaveRecordDto createLeaveRecordDto,
+    public async Task<IActionResult> CreateLeaveRecord(CreateLeaveRecordDto leaveRecordDto,
         CancellationToken cancellationToken)
     {
-        var isCreated = await business.CreateLeaveRecord(createLeaveRecordDto, cancellationToken);
+        var isCreated = await business.CreateLeaveRecord(leaveRecordDto, cancellationToken);
         return isCreated ? Ok() : BadRequest();
     }
 

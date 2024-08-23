@@ -11,17 +11,17 @@ namespace Attendance.Business;
 public class Business(IRepository repository, ILogger<Business> logger, IMapper mapper, IClientHttp clientHttp)
     : IBusiness
 {
-    public async Task<bool> CreateAttendance(CreateAttendanceDto createAttendanceDto,
+    public async Task<bool> CreateAttendance(AttendanceDto attendanceDto,
         CancellationToken cancellationToken = default)
     {
-        var employeeExists = await clientHttp.ValidateEmployeeAsync(createAttendanceDto.EmployeeId, cancellationToken);
+        var employeeExists = await clientHttp.ValidateEmployeeAsync(attendanceDto.EmployeeId, cancellationToken);
         if (!employeeExists)
         {
-            logger.LogError("Employee with id {employeeId} not found", createAttendanceDto.EmployeeId);
+            logger.LogError("Employee with id {employeeId} not found", attendanceDto.EmployeeId);
             return false;
         }
 
-        var attendance = mapper.Map<Repository.Models.Attendance>(createAttendanceDto);
+        var attendance = mapper.Map<Repository.Models.Attendance>(attendanceDto);
         await repository.CreateAttendance(attendance, cancellationToken);
         await repository.SaveChangesAsync(cancellationToken);
         return true;
@@ -69,17 +69,17 @@ public class Business(IRepository repository, ILogger<Business> logger, IMapper 
         return mapper.Map<IEnumerable<ReadAttendanceDto>>(attendances);
     }
 
-    public async Task<bool> CreateLeaveRecord(CreateLeaveRecordDto createLeaveRecordDto,
+    public async Task<bool> CreateLeaveRecord(CreateLeaveRecordDto leaveRecordDto,
         CancellationToken cancellationToken = default)
     {
-        var employeeExists = await clientHttp.ValidateEmployeeAsync(createLeaveRecordDto.EmployeeId, cancellationToken);
+        var employeeExists = await clientHttp.ValidateEmployeeAsync(leaveRecordDto.EmployeeId, cancellationToken);
         if (!employeeExists)
         {
-            logger.LogError("Employee with id {employeeId} not found", createLeaveRecordDto.EmployeeId);
+            logger.LogError("Employee with id {employeeId} not found", leaveRecordDto.EmployeeId);
             return false;
         }
 
-        var leaveRecord = mapper.Map<LeaveRecord>(createLeaveRecordDto);
+        var leaveRecord = mapper.Map<LeaveRecord>(leaveRecordDto);
         await repository.CreateLeaveRecord(leaveRecord, cancellationToken);
         await repository.SaveChangesAsync(cancellationToken);
         return true;

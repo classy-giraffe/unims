@@ -9,10 +9,10 @@ namespace Employee.API.Controllers;
 public class EmployeeController(IBusiness business) : ControllerBase
 {
     [HttpPost(Name = "CreateEmployee")]
-    public async Task<IActionResult> CreateEmployee(CreateEmployeeDto createEmployeeDto,
+    public async Task<IActionResult> CreateEmployee(CreateEmployeeDto employeeDto,
         CancellationToken cancellationToken)
     {
-        await business.CreateEmployee(createEmployeeDto, cancellationToken);
+        await business.CreateEmployee(employeeDto, cancellationToken);
         return Ok();
     }
 

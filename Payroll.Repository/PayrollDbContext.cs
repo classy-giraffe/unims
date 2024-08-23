@@ -8,6 +8,7 @@ public class PayrollDbContext(DbContextOptions<PayrollDbContext> options) : DbCo
     public DbSet<Models.Payroll> Payrolls { get; init; }
     public DbSet<Salary> Salaries { get; init; }
     public DbSet<Deduction> Deductions { get; init; }
+    public DbSet<Employee> Employees { get; init; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -60,6 +61,13 @@ public class PayrollDbContext(DbContextOptions<PayrollDbContext> options) : DbCo
             entity.Property(d => d.Amount)
                 .IsRequired()
                 .HasPrecision(18, 2);
+        });
+
+        modelBuilder.Entity<Employee>(entity =>
+        {
+            entity.HasKey(e => e.PrimaryId);
+            entity.Property(e => e.Id)
+                .IsRequired();
         });
     }
 }

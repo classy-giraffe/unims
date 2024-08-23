@@ -3,15 +3,20 @@ using Employee.Business.Abstraction;
 using Employee.Repository.Abstraction;
 using Employee.Repository.Models;
 using Employee.Shared;
+using KafkaFlow.Producers;
 using Microsoft.Extensions.Logging;
 
 namespace Employee.Business;
 
-public class Business(IRepository repository, ILogger<Business> logger, IMapper mapper) : IBusiness
+public class Business(
+    IRepository repository,
+    ILogger<Business> logger,
+    IMapper mapper,
+    IProducerAccessor producerAccessor) : IBusiness
 {
-    public async Task CreateJobTitle(CreateJobTitleDto createJobTitleDto, CancellationToken cancellationToken)
+    public async Task CreateJobTitle(CreateJobTitleDto jobTitleDto, CancellationToken cancellationToken)
     {
-        var jobTitle = mapper.Map<JobTitle>(createJobTitleDto);
+        var jobTitle = mapper.Map<JobTitle>(jobTitleDto);
         await repository.CreateJobTitle(jobTitle, cancellationToken);
         await repository.SaveChangesAsync(cancellationToken);
     }
@@ -70,11 +75,15 @@ public class Business(IRepository repository, ILogger<Business> logger, IMapper 
         return null;
     }
 
-    public async Task CreateEmployee(CreateEmployeeDto createEmployeeDto, CancellationToken cancellationToken)
+    public async Task CreateEmployee(CreateEmployeeDto employeeDto, CancellationToken cancellationToken)
     {
-        var employee = mapper.Map<Repository.Models.Employee>(createEmployeeDto);
+        var employee = mapper.Map<Repository.Models.Employee>(employeeDto);
         await repository.CreateEmployee(employee, cancellationToken);
         await repository.SaveChangesAsync(cancellationToken);
+        logger.LogInformation("Employee with id {employeeId} created on Database", employee.EmployeeId);
+        var producer = producerAccessor.GetProducer("employee-producer");
+        await producer.ProduceAsync("employee-topic", Guid.NewGuid().ToString(), employee.EmployeeId);
+        logger.LogInformation("Employee with id {employeeId} published to Kafka", employee.EmployeeId);
     }
 
     public async Task<ReadEmployeeDto?> GetEmployeeById(int employeeId, CancellationToken cancellationToken)
@@ -115,6 +124,9 @@ public class Business(IRepository repository, ILogger<Business> logger, IMapper 
         }
 
         await repository.SaveChangesAsync(cancellationToken);
+        var producer = producerAccessor.GetProducer("employee-producer");
+        await producer.ProduceAsync("employee-topic", Guid.NewGuid().ToString(), employeeId);
+        logger.LogInformation("Employee with id {employeeId} has been deleted and published to Kafka", employeeId);
         return true;
     }
 
@@ -139,9 +151,9 @@ public class Business(IRepository repository, ILogger<Business> logger, IMapper 
         return employees.Select(mapper.Map<ReadEmployeeDto>);
     }
 
-    public async Task CreateDepartment(CreateDepartmentDto createDepartmentDto, CancellationToken cancellationToken)
+    public async Task CreateDepartment(CreateDepartmentDto departmentDto, CancellationToken cancellationToken)
     {
-        var department = mapper.Map<Department>(createDepartmentDto);
+        var department = mapper.Map<Department>(departmentDto);
         await repository.CreateDepartment(department, cancellationToken);
         await repository.SaveChangesAsync(cancellationToken);
     }

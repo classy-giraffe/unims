@@ -9,10 +9,10 @@ namespace Attendance.API.Controllers;
 public class AttendanceController(IBusiness business) : ControllerBase
 {
     [HttpPost(Name = "CreateAttendance")]
-    public async Task<IActionResult> CreateAttendance(CreateAttendanceDto createAttendanceDto,
+    public async Task<IActionResult> CreateAttendance(AttendanceDto attendanceDto,
         CancellationToken cancellationToken)
     {
-        var isCreated = await business.CreateAttendance(createAttendanceDto, cancellationToken);
+        var isCreated = await business.CreateAttendance(attendanceDto, cancellationToken);
         return isCreated ? Ok() : BadRequest();
     }
 

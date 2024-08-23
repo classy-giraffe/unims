@@ -9,10 +9,10 @@ namespace Employee.API.Controllers;
 public class DepartmentController(IBusiness business) : ControllerBase
 {
     [HttpPost(Name = "CreateDepartment")]
-    public async Task<IActionResult> CreateDepartment(CreateDepartmentDto createDepartmentDto,
+    public async Task<IActionResult> CreateDepartment(CreateDepartmentDto departmentDto,
         CancellationToken cancellationToken)
     {
-        await business.CreateDepartment(createDepartmentDto, cancellationToken);
+        await business.CreateDepartment(departmentDto, cancellationToken);
         return Ok();
     }
 

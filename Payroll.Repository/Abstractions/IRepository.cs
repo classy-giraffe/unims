@@ -26,4 +26,6 @@ public interface IRepository
     Task<IEnumerable<Models.Payroll>> GetPayrolls(CancellationToken cancellationToken = default);
     Task<IEnumerable<Salary>> GetSalaries(CancellationToken cancellationToken = default);
     Task<IEnumerable<Deduction>> GetDeductions(CancellationToken cancellationToken = default);
+
+    Task CreateEmployee(Employee employee, CancellationToken cancellationToken = default);
 }

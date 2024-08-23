@@ -9,11 +9,12 @@ namespace Payroll.API.Controllers;
 public class PayrollController(IBusiness business) : ControllerBase
 {
     [HttpPost(Name = "CreatePayroll")]
+    [ProducesResponseType(400)]
     public async Task<IActionResult> CreatePayroll(CreatePayrollDto createPayrollDto,
         CancellationToken cancellationToken)
     {
-        await business.CreatePayroll(createPayrollDto, cancellationToken);
-        return Ok();
+        var isCreated = await business.CreatePayroll(createPayrollDto, cancellationToken);
+        return isCreated ? Ok() : BadRequest();
     }
 
     [HttpGet("{payrollId:int}", Name = "GetPayrollById")]

@@ -9,10 +9,10 @@ namespace Employee.API.Controllers;
 public class JobTitleController(IBusiness business, ILogger<JobTitleController> logger) : ControllerBase
 {
     [HttpPost(Name = "CreateJobTitle")]
-    public async Task<IActionResult> CreateJobTitle(CreateJobTitleDto createJobTitleDto,
+    public async Task<IActionResult> CreateJobTitle(CreateJobTitleDto jobTitleDto,
         CancellationToken cancellationToken)
     {
-        await business.CreateJobTitle(createJobTitleDto, cancellationToken);
+        await business.CreateJobTitle(jobTitleDto, cancellationToken);
         return Ok();
     }
 

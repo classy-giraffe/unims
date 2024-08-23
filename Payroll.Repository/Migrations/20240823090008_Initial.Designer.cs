@@ -12,7 +12,7 @@ using Payroll.Repository;
 namespace Payroll.Repository.Migrations
 {
     [DbContext(typeof(PayrollDbContext))]
-    [Migration("20240822163133_Initial")]
+    [Migration("20240823090008_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -50,6 +50,22 @@ namespace Payroll.Repository.Migrations
                     b.HasIndex("PayrollId");
 
                     b.ToTable("Deductions");
+                });
+
+            modelBuilder.Entity("Payroll.Repository.Models.Employee", b =>
+                {
+                    b.Property<int>("PrimaryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("PrimaryId"));
+
+                    b.Property<int>("Id")
+                        .HasColumnType("integer");
+
+                    b.HasKey("PrimaryId");
+
+                    b.ToTable("Employees");
                 });
 
             modelBuilder.Entity("Payroll.Repository.Models.Payroll", b =>

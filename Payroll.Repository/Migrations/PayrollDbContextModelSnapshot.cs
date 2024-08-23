@@ -49,6 +49,22 @@ namespace Payroll.Repository.Migrations
                     b.ToTable("Deductions");
                 });
 
+            modelBuilder.Entity("Payroll.Repository.Models.Employee", b =>
+                {
+                    b.Property<int>("PrimaryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("PrimaryId"));
+
+                    b.Property<int>("Id")
+                        .HasColumnType("integer");
+
+                    b.HasKey("PrimaryId");
+
+                    b.ToTable("Employees");
+                });
+
             modelBuilder.Entity("Payroll.Repository.Models.Payroll", b =>
                 {
                     b.Property<int>("PayrollId")

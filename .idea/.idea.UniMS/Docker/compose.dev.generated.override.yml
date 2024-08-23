@@ -1,0 +1,21 @@
+# This is a generated file. Not intended for manual editing.
+services:
+  employee-ms:
+    build:
+      context: "C:\\Users\\tommy\\RiderProjects\\UniMS"
+      dockerfile: "Employee.API/Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net8.0/Employee.API.dll"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+    image: "employee.api:dev"
+    ports: []
+    volumes:
+    - "C:\\Users\\tommy\\.nuget\\packages:/home/app/.nuget/packages"
+    - "C:\\Users\\tommy\\RiderProjects\\UniMS\\Employee.API:/app:rw"
+    - "C:\\Users\\tommy\\RiderProjects\\UniMS:/src:rw"
+    working_dir: "/app"
