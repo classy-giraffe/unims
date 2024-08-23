@@ -5,6 +5,8 @@ using Employee.Repository.Models;
 using Employee.Shared;
 using KafkaFlow.Producers;
 using Microsoft.Extensions.Logging;
+using Payroll.Shared;
+using CreateEmployeeDto = Employee.Shared.CreateEmployeeDto;
 
 namespace Employee.Business;
 
@@ -85,9 +87,15 @@ public class Business(
         logger.LogInformation("Employee with id {employeeId} created on Database", employee.EmployeeId);
 
         var producer = producerAccessor.GetProducer("employee-producer");
-        await producer.ProduceAsync("employee-topic", Guid.NewGuid().ToString(), employee.EmployeeId);
 
-        logger.LogInformation("Employee with id {employeeId} published to Kafka", employee.EmployeeId);
+        var employeeEvent = new EmployeeEvent
+        {
+            Id = employee.EmployeeId,
+            Event = Event.Created
+        };
+
+        await producer.ProduceAsync("employee-event-topic", Guid.NewGuid().ToString(), employeeEvent);
+        logger.LogInformation("Employee with id {employeeId} has been published to Kafka", employee.EmployeeId);
     }
 
     public async Task<ReadEmployeeDto?> GetEmployeeById(int employeeId, CancellationToken cancellationToken)
@@ -129,8 +137,13 @@ public class Business(
 
         await repository.SaveChangesAsync(cancellationToken);
         var producer = producerAccessor.GetProducer("employee-producer");
-        await producer.ProduceAsync("employee-topic", Guid.NewGuid().ToString(), employeeId);
-        logger.LogInformation("Employee with id {employeeId} has been deleted and published to Kafka", employeeId);
+        var employeeEvent = new EmployeeEvent
+        {
+            Id = employeeId,
+            Event = Event.Deleted
+        };
+        await producer.ProduceAsync("employee-event-topic", Guid.NewGuid().ToString(), employeeEvent);
+        logger.LogInformation("Employee with id {employeeId} has been published to Kafka", employeeId);
         return true;
     }
 

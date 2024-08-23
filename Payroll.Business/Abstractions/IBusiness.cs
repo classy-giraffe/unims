@@ -14,7 +14,7 @@ public interface IBusiness
 
     Task<IEnumerable<ReadPayrollDto>> GetPayrolls(CancellationToken cancellationToken = default);
 
-    Task CreateSalary(CreateSalaryDto createSalaryDto, CancellationToken cancellationToken = default);
+    Task<bool> CreateSalary(CreateSalaryDto createSalaryDto, CancellationToken cancellationToken = default);
     Task<ReadSalaryDto?> GetSalaryById(int salaryId, CancellationToken cancellationToken = default);
     Task<bool> UpdateSalary(UpdateSalaryDto updateSalaryDto, CancellationToken cancellationToken = default);
     Task<bool> DeleteSalary(int salaryId, CancellationToken cancellationToken = default);
@@ -31,4 +31,7 @@ public interface IBusiness
 
     Task<IEnumerable<ReadDeductionDto>> GetDeductionsByPayrollId(int payrollId,
         CancellationToken cancellationToken = default);
+
+    Task CreateEmployee(CreateEmployeeDto createEmployeeDto, CancellationToken cancellationToken = default);
+    Task DeleteEmployee(int employeeId, CancellationToken cancellationToken = default);
 }

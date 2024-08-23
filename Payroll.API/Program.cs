@@ -16,16 +16,15 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<PayrollDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IRepository, Repository>();
-builder.Services.AddScoped<IBusiness, Business>();
+builder.Services.AddTransient<IBusiness, Business>();
 builder.Services.AddAutoMapper(typeof(PayrollProfiles));
 builder.Services.AddHttpClient<IClientHttp, ClientHttp>(client =>
     client.BaseAddress = new Uri("http://employee-ms:8080"));
-builder.Services.AddScoped<EmployeeCreatedHandler>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Configure KafkaFlow
-const string topicName = "employee-topic";
+const string topicName = "employee-event-topic";
 const string groupName = "payroll-consumer-group";
 
 builder.Services.AddKafkaFlowHostedService(
@@ -38,12 +37,12 @@ builder.Services.AddKafkaFlowHostedService(
                     .Topic(topicName)
                     .WithGroupId(groupName)
                     .WithBufferSize(100)
-                    .WithWorkersCount(4)
-                    .WithAutoOffsetReset(AutoOffsetReset.Latest)
+                    .WithWorkersCount(2)
+                    .WithAutoOffsetReset(AutoOffsetReset.Earliest)
                     .AddMiddlewares(middlewares => middlewares
-                        .AddSerializer<JsonCoreSerializer>()
+                        .AddDeserializer<JsonCoreDeserializer>()
                         .AddTypedHandlers(handlers => handlers
-                            .AddHandler<EmployeeCreatedHandler>()
+                            .AddHandler<EmployeeHandler>()
                         )
                     )
             )
@@ -51,8 +50,6 @@ builder.Services.AddKafkaFlowHostedService(
 );
 
 var app = builder.Build();
-var kafkaBus = app.Services.CreateKafkaBus();
-await kafkaBus.StartAsync();
 
 if (app.Environment.IsDevelopment())
 {

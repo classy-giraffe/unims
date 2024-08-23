@@ -14,13 +14,17 @@ public class Business(IRepository repository, IMapper mapper, ILogger<Business> 
     public async Task<bool> CreatePayroll(CreatePayrollDto createPayrollDto,
         CancellationToken cancellationToken = default)
     {
-        // quando creo employee Kafka fa una publish dell messaggio
-        // chiamo il db locale per vedere se l'employee esiste
-        var employeeExists = await clientHttp.ValidateEmployeeAsync(createPayrollDto.EmployeeId, cancellationToken);
-        if (!employeeExists)
+        var employeeExistsKafka = await repository.GetEmployeeById(createPayrollDto.EmployeeId, cancellationToken);
+        if (!employeeExistsKafka)
         {
-            logger.LogError("Employee with id {employeeId} not found", createPayrollDto.EmployeeId);
-            return false;
+            // Theoretically, this should never happen as the db should be the source of truth
+            var employeeExistsHttp =
+                await clientHttp.ValidateEmployeeAsync(createPayrollDto.EmployeeId, cancellationToken);
+            if (!employeeExistsHttp)
+            {
+                logger.LogError("Employee with id {EmployeeId} not found", createPayrollDto.EmployeeId);
+                return false;
+            }
         }
 
         var payroll = mapper.Map<Repository.Models.Payroll>(createPayrollDto);
@@ -64,11 +68,25 @@ public class Business(IRepository repository, IMapper mapper, ILogger<Business> 
     }
 
     // Salary methods
-    public async Task CreateSalary(CreateSalaryDto createSalaryDto, CancellationToken cancellationToken = default)
+    public async Task<bool> CreateSalary(CreateSalaryDto createSalaryDto, CancellationToken cancellationToken = default)
     {
+        var employeeExistsKafka = await repository.GetEmployeeById(createSalaryDto.EmployeeId, cancellationToken);
+        if (!employeeExistsKafka)
+        {
+            // Theoretically, this should never happen as the db should be the source of truth
+            var employeeExistsHttp =
+                await clientHttp.ValidateEmployeeAsync(createSalaryDto.EmployeeId, cancellationToken);
+            if (!employeeExistsHttp)
+            {
+                logger.LogError("Employee with id {EmployeeId} not found", createSalaryDto.EmployeeId);
+                return false;
+            }
+        }
+
         var salary = mapper.Map<Salary>(createSalaryDto);
         await repository.CreateSalary(salary, cancellationToken);
         await repository.SaveChangesAsync(cancellationToken);
+        return true;
     }
 
     public async Task<ReadSalaryDto?> GetSalaryById(int salaryId, CancellationToken cancellationToken = default)
@@ -184,5 +202,20 @@ public class Business(IRepository repository, IMapper mapper, ILogger<Business> 
     {
         var payrolls = await repository.GetPayrollsByEmployeeId(employeeId, cancellationToken);
         return payrolls.Select(mapper.Map<ReadPayrollDto>);
+    }
+
+    public async Task CreateEmployee(CreateEmployeeDto createEmployeeDto, CancellationToken cancellationToken = default)
+    {
+        var employee = mapper.Map<Employee>(createEmployeeDto);
+        await repository.CreateEmployee(employee, cancellationToken);
+        await repository.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task DeleteEmployee(int employeeId, CancellationToken cancellationToken = default)
+    {
+        var isDeleted = await repository.DeleteEmployee(employeeId, cancellationToken);
+        if (!isDeleted) logger.LogError("Employee with id {EmployeeId} not found", employeeId);
+
+        await repository.SaveChangesAsync(cancellationToken);
     }
 }

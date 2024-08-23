@@ -1,11 +1,13 @@
 ﻿namespace Payroll.Shared;
 
-public class EmployeeCreatedEvent
+public enum Event
 {
-    public int EmployeeId { get; set; }
+    Created,
+    Deleted
 }
 
-public class EmployeeDeletedEvent
+public class EmployeeEvent
 {
-    public int EmployeeId { get; set; }
+    public int Id { get; set; }
+    public Event Event { get; set; }
 }

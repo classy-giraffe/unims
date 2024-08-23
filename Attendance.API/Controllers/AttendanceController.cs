@@ -9,6 +9,7 @@ namespace Attendance.API.Controllers;
 public class AttendanceController(IBusiness business) : ControllerBase
 {
     [HttpPost(Name = "CreateAttendance")]
+    [ProducesResponseType(400)]
     public async Task<IActionResult> CreateAttendance(AttendanceDto attendanceDto,
         CancellationToken cancellationToken)
     {

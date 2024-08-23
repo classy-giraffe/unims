@@ -19,7 +19,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Configure KafkaFlow
-const string topicName = "employee-topic";
+const string topicName = "employee-event-topic";
 const string producerName = "employee-producer";
 
 builder.Services.AddKafka(

@@ -39,12 +39,12 @@
     image: postgres
     container_name: employee-db
     restart: always
+    ports:
+      - "5432:5432"
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: EmployeeDB
-    volumes:
-      - employee-db-data:/var/lib/postgresql/data
   
   attendance-db:
     image: postgres
@@ -54,15 +54,14 @@
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: AttendanceDB
-    volumes:
-      - attendance-db-data:/var/lib/postgresql/data
+
   
   payroll-db:
     image: postgres
     container_name: payroll-db
     restart: always
     ports:
-      - "5432:5432"
+      - "5433:5432"
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -90,8 +89,3 @@
       - KAFKA_AUTO_CREATE_TOPICS_ENABLE=true
     depends_on:
       - zookeeper
-
-volumes:
-  employee-db-data:
-  attendance-db-data:
-  payroll-db-data:

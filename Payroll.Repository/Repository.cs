@@ -118,4 +118,17 @@ public class Repository(PayrollDbContext dbContext) : IRepository
     {
         await dbContext.Employees.AddAsync(employee, cancellationToken);
     }
+
+    public async Task<bool> DeleteEmployee(int employeeId, CancellationToken cancellationToken = default)
+    {
+        var employee = await dbContext.Employees.Where(e => e.Id == employeeId).FirstOrDefaultAsync(cancellationToken);
+        if (employee == null) return false;
+        dbContext.Employees.Remove(employee);
+        return true;
+    }
+
+    public async Task<bool> GetEmployeeById(int employeeId, CancellationToken cancellationToken = default)
+    {
+        return await dbContext.Employees.AnyAsync(e => e.Id == employeeId, cancellationToken);
+    }
 }

@@ -19,5 +19,7 @@ public class PayrollProfiles : Profile
         CreateMap<CreateDeductionDto, Deduction>().ReverseMap();
         CreateMap<UpdateDeductionDto, Deduction>().ReverseMap();
         CreateMap<ReadDeductionDto, Deduction>().ReverseMap();
+
+        CreateMap<CreateEmployeeDto, Employee>().ReverseMap();
     }
 }

@@ -28,4 +28,6 @@ public interface IRepository
     Task<IEnumerable<Deduction>> GetDeductions(CancellationToken cancellationToken = default);
 
     Task CreateEmployee(Employee employee, CancellationToken cancellationToken = default);
+    Task<bool> DeleteEmployee(int employeeId, CancellationToken cancellationToken = default);
+    Task<bool> GetEmployeeById(int employeeId, CancellationToken cancellationToken = default);
 }
