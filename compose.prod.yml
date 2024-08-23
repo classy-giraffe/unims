@@ -6,6 +6,7 @@ services:
       - "8080:8080"
     depends_on:
       - employee-db
+      - kafka
     environment:
       - ConnectionStrings__DefaultConnection=Host=employee-db;Port=5432;Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD};Database=EmployeeDB;
   
@@ -16,6 +17,7 @@ services:
       - "8081:8080"
     depends_on:
       - attendance-db
+      - employee-ms
     environment:
       - ConnectionStrings__DefaultConnection=Host=attendance-db;Port=5432;Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD};Database=AttendanceDB;
         
@@ -26,6 +28,7 @@ services:
       - "8082:8080"
     depends_on:
         - payroll-db
+        - employee-ms
     environment:
         - ConnectionStrings__DefaultConnection=Host=payroll-db;Port=5432;Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD};Database=PayrollDB;
   

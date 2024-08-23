@@ -18,6 +18,12 @@ builder.Services.AddDbContext<PayrollDbContext>(options =>
 builder.Services.AddScoped<IRepository, Repository>();
 builder.Services.AddTransient<IBusiness, Business>();
 builder.Services.AddAutoMapper(typeof(PayrollProfiles));
+
+// Dev
+//builder.Services.AddHttpClient<IClientHttp, ClientHttp>(client =>
+//    client.BaseAddress = new Uri("http://localhost:5258"));
+
+// Prod
 builder.Services.AddHttpClient<IClientHttp, ClientHttp>(client =>
     client.BaseAddress = new Uri("http://employee-ms:8080"));
 builder.Services.AddEndpointsApiExplorer();

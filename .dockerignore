@@ -23,3 +23,6 @@
 **/values.dev.yaml
 LICENSE
 README.md
+Payroll.API/appsettings.Development.json
+Employee.API/appsettings.Development.json
+Attendance.API/appsettings.Development.json

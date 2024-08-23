@@ -1,40 +1,4 @@
-﻿services:
-  employee-ms:
-    build:
-      context: .
-      dockerfile: Employee.API/Dockerfile
-    container_name: employee-ms
-    ports:
-      - "8080:8080"
-    depends_on:
-      - employee-db
-    environment:
-      - ConnectionStrings__DefaultConnection=Host=employee-db;Port=5432;Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD};Database=EmployeeDB;
-  
-  attendance-ms:
-    build:
-      context: .
-      dockerfile: Attendance.API/Dockerfile
-    container_name: attendance-ms
-    ports:
-      - "8081:8080"
-    depends_on:
-      - attendance-db
-    environment:
-      - ConnectionStrings__DefaultConnection=Host=attendance-db;Port=5432;Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD};Database=AttendanceDB;
-  
-  payroll-ms:
-    build:
-      context: .
-      dockerfile: Payroll.API/Dockerfile
-    container_name: payroll-ms
-    ports:
-      - "8082:8080"
-    depends_on:
-      - payroll-db
-    environment:
-      - ConnectionStrings__DefaultConnection=Host=payroll-db;Port=5432;Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD};Database=PayrollDB;
-  
+﻿services:  
   employee-db:
     image: postgres
     container_name: employee-db
@@ -50,11 +14,12 @@
     image: postgres
     container_name: attendance-db
     restart: always
+    ports:
+      - "5434:5432"
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: AttendanceDB
-
   
   payroll-db:
     image: postgres
