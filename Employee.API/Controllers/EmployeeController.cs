@@ -6,7 +6,7 @@ namespace Employee.API.Controllers;
 
 [ApiController]
 [Route("api/v1/[controller]")]
-public class EmployeeController(IBusiness business, ILogger<EmployeeController> logger) : ControllerBase
+public class EmployeeController(IBusiness business) : ControllerBase
 {
     [HttpPost(Name = "CreateEmployee")]
     public async Task<IActionResult> CreateEmployee(CreateEmployeeDto createEmployeeDto,

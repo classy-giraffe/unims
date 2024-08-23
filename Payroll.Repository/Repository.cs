@@ -69,4 +69,48 @@ public class Repository(PayrollDbContext dbContext) : IRepository
             .Where(d => d.PayrollId == payrollId)
             .ToListAsync(cancellationToken);
     }
+
+    public async Task<bool> DeletePayroll(int payrollId, CancellationToken cancellationToken = default)
+    {
+        var payroll = await dbContext.Payrolls.FindAsync(payrollId, cancellationToken);
+        if (payroll == null) return false;
+
+        dbContext.Payrolls.Remove(payroll);
+        return true;
+    }
+
+    public async Task<bool> DeleteSalary(int salaryId, CancellationToken cancellationToken = default)
+    {
+        var salary = await dbContext.Salaries.FindAsync(salaryId, cancellationToken);
+        if (salary == null) return false;
+
+        dbContext.Salaries.Remove(salary);
+        return true;
+    }
+
+    public async Task<bool> DeleteDeduction(int deductionId, CancellationToken cancellationToken = default)
+    {
+        var deduction = await dbContext.Deductions.FindAsync(deductionId, cancellationToken);
+        if (deduction == null) return false;
+
+        dbContext.Deductions.Remove(deduction);
+        return true;
+    }
+
+    public async Task<IEnumerable<Models.Payroll>> GetPayrolls(CancellationToken cancellationToken = default)
+    {
+        return await dbContext.Payrolls
+            .Include(p => p.Deductions)
+            .ToListAsync(cancellationToken);
+    }
+
+    public async Task<IEnumerable<Salary>> GetSalaries(CancellationToken cancellationToken = default)
+    {
+        return await dbContext.Salaries.ToListAsync(cancellationToken);
+    }
+
+    public async Task<IEnumerable<Deduction>> GetDeductions(CancellationToken cancellationToken = default)
+    {
+        return await dbContext.Deductions.ToListAsync(cancellationToken);
+    }
 }

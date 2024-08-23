@@ -6,4 +6,14 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+        <ProjectReference Include="..\Payroll.Http\Payroll.Http.csproj"/>
+        <ProjectReference Include="..\Payroll.Repository\Payroll.Repository.csproj"/>
+        <ProjectReference Include="..\Payroll.Shared\Payroll.Shared.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="AutoMapper" Version="13.0.1"/>
+    </ItemGroup>
+
 </Project>

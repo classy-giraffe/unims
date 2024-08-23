@@ -11,11 +11,8 @@ public class AttendanceProfiles : Profile
         CreateMap<CreateAttendanceDto, Repository.Models.Attendance>().ReverseMap();
         CreateMap<UpdateAttendanceDto, Repository.Models.Attendance>().ReverseMap();
         CreateMap<ReadAttendanceDto, Repository.Models.Attendance>().ReverseMap();
-        CreateMap<DeleteAttendanceDto, Repository.Models.Attendance>().ReverseMap();
-
         CreateMap<CreateLeaveRecordDto, LeaveRecord>().ReverseMap();
         CreateMap<UpdateLeaveRecordDto, LeaveRecord>().ReverseMap();
         CreateMap<ReadLeaveRecordDto, LeaveRecord>().ReverseMap();
-        CreateMap<DeleteLeaveRecordDto, LeaveRecord>().ReverseMap();
     }
 }

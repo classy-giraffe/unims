@@ -5,9 +5,9 @@ namespace Payroll.Repository;
 
 public class PayrollDbContext(DbContextOptions<PayrollDbContext> options) : DbContext(options)
 {
-    public DbSet<Models.Payroll> Payrolls { get; set; }
-    public DbSet<Salary> Salaries { get; set; }
-    public DbSet<Deduction> Deductions { get; set; }
+    public DbSet<Models.Payroll> Payrolls { get; init; }
+    public DbSet<Salary> Salaries { get; init; }
+    public DbSet<Deduction> Deductions { get; init; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -17,7 +17,7 @@ public class PayrollDbContext(DbContextOptions<PayrollDbContext> options) : DbCo
 
             entity.Property(p => p.GrossSalary)
                 .IsRequired()
-                .HasPrecision(18, 2); // Precision for decimal type
+                .HasPrecision(18, 2);
 
             entity.Property(p => p.NetSalary)
                 .IsRequired()
@@ -33,24 +33,22 @@ public class PayrollDbContext(DbContextOptions<PayrollDbContext> options) : DbCo
                 .OnDelete(DeleteBehavior.Cascade);
         });
 
-        // Salary entity configuration
         modelBuilder.Entity<Salary>(entity =>
         {
             entity.HasKey(s => s.SalaryId);
 
             entity.Property(s => s.BaseSalary)
                 .IsRequired()
-                .HasPrecision(18, 2); // Precision for decimal type
+                .HasPrecision(18, 2);
 
             entity.Property(s => s.EffectiveDate)
                 .IsRequired()
                 .HasColumnType("date");
 
             entity.HasIndex(s => new { s.EmployeeId, s.EffectiveDate })
-                .IsUnique(); // Ensures no duplicate salary records for the same employee and effective date
+                .IsUnique();
         });
 
-        // Deduction entity configuration
         modelBuilder.Entity<Deduction>(entity =>
         {
             entity.HasKey(d => d.DeductionId);
@@ -61,7 +59,7 @@ public class PayrollDbContext(DbContextOptions<PayrollDbContext> options) : DbCo
 
             entity.Property(d => d.Amount)
                 .IsRequired()
-                .HasPrecision(18, 2); // Precision for decimal type
+                .HasPrecision(18, 2);
         });
     }
 }
